@@ -47,7 +47,7 @@ function pala(x, y, h){
 
     this.draw = function() {
         this.ctx.fillStyle = 'white';
-        this.ctx.fillRect(this.x_ini, this.y, this.width, this.height);
+        this.ctx.fillRect(this.x, this.y, this.width, this.height);
     };
 
     this.update = function() {
@@ -61,6 +61,7 @@ function pala(x, y, h){
 
     this.reset = function() {
         this.y = this.y_ini;
+        this.x = this.x_ini;
     };
 }
 
@@ -75,7 +76,7 @@ function ball(h){
     this.y = 0;
     this.vx = 4;
     this.vy = 1;
-    this.speed = 2;
+    this.speed = 1;
 
 
     this.init = function(ctx) {
@@ -91,11 +92,7 @@ function ball(h){
     this.update = function () {
         this.x += this.vx*this.speed;
         this.y += this.vy*this.speed;
-        if (this.y > this.fh - this.height){
-            this.y = this.fh - this.height;
-            this.vy = -this.vy;
-        }else if (this.y < this.height) {
-            this.y = this.height;
+        if (this.y > this.fh - this.height || this.y < this.height){
             this.vy = -this.vy;
         }
     };
@@ -122,54 +119,44 @@ function main(){
 
     var campo = new field(canvas.width, canvas.height);
     var bola = new ball(canvas.height);
-    var player1 = new pala(p_x1, p_y1, canvas.height);
-    var player2 = new pala(p_x2, p_y2, canvas.height);
+    var pala1 = new pala(p_x1, p_y1, canvas.height);
+    var pala2 = new pala(p_x2, p_y2, canvas.height);
 
     bola.init(ctx)
-    player1.init(ctx)
-    player2.init(ctx)
+    pala1.init(ctx)
+    pala2.init(ctx)
     campo.init(ctx)
     bola.draw()
-    player1.draw()
-    player2.draw()
+    pala1.draw()
+    pala2.draw()
     campo.draw()
 
     sacar.onclick = () => {
         if (!timer) {
             timer = setInterval(()=>{
                 bola.update();
-                player1.update();
-                player2.update();
+                pala1.update();
+                pala2.update();
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 bola.draw();
-                player1.draw();
-                player2.draw();
+                pala1.draw();
+                pala2.draw();
                 campo.draw();
-
-                if (bola.x > canvas.width - bola.width){
-                    bola.x = canvas.width - bola.width;
-                    bola.vx = -bola.vx;
-                    campo.points1 += 1;
-                }else if (bola.x < bola.width) {
-                    bola.x = bola.width;
-                    bola.vx = -bola.vx;
-                    campo.points2 += 1;
-                }
 
                 window.onkeydown = (p) => {
                     p.preventDefault();
                     switch (p.key) {
                         case 'w':
-                            player1.vy = -1;
+                            pala1.vy = -1;
                             break;
                         case 's':
-                            player1.vy = 1;
+                            pala1.vy = 1;
                             break;
                         case 'ArrowUp':
-                            player2.vy = -1;
+                            pala2.vy = -1;
                             break;
                         case 'ArrowDown':
-                            player2.vy = 1;
+                            pala2.vy = 1;
                             break;
                         default:
                             break;
@@ -179,20 +166,33 @@ function main(){
                     p.preventDefault();
                     switch (p.key) {
                         case 'w':
-                            player1.vy = 0;
+                            pala1.vy = 0;
                             break;
                         case 's':
-                            player1.vy = 0;
+                            pala1.vy = 0;
                             break;
                         case 'ArrowUp':
-                            player2.vy = 0;
+                            pala2.vy = 0;
                             break;
                         case 'ArrowDown':
-                            player2.vy = 0;
+                            pala2.vy = 0;
                             break;
                         default:
                             break;
                     }
+                }
+
+                if (bola.x > canvas.width - bola.width){
+                    bola.vx = -bola.vx;
+                    campo.points1 += 1;
+                }else if (bola.x < bola.width) {
+                    bola.vx = -bola.vx;
+                    campo.points2 += 1;
+                }
+
+                if (bola.x <= (pala1.x + pala1.width) - bola.width){
+
+                    bola.vx = -bola.vx;
                 }
 
                 if (campo.points1 == 7 || campo.points2 == 7) {
@@ -200,11 +200,11 @@ function main(){
                     timer = null;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     bola.reset();
-                    player1.reset();
-                    player2.reset();
+                    pala1.reset();
+                    pala2.reset();
                     campo.reset();
-                    player1.draw();
-                    player2.draw();
+                    pala1.draw();
+                    pala2.draw();
                     bola.draw();
                     campo.draw();
                 }
