@@ -190,9 +190,16 @@ function main(){
                     campo.points2 += 1;
                 }
 
-                if (bola.x <= (pala1.x + pala1.width) - bola.width){
+                if (bola.x < (pala1.x + pala1.width) && bola.x > pala1.x){
+                    if (bola.y > pala1.y && bola.y < (pala1.y + pala1.height)){
+                        bola.vx = -bola.vx;
+                    }
+                }
 
-                    bola.vx = -bola.vx;
+                if ((bola.x + bola.width) > pala2.x && (bola.x + bola.width) < (pala2.x + pala2.width)){
+                    if ((bola.y + bola.height) < (pala2.y + pala2.height) && (bola.y + bola.height) > pala2.y){
+                        bola.vx = -bola.vx
+                    }
                 }
 
                 if (campo.points1 == 7 || campo.points2 == 7) {
