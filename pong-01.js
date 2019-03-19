@@ -103,9 +103,80 @@ function ball(h){
     }
 }
 
+function mover_palas(pala1, pala2){
+    window.onkeydown = (p) => {
+        p.preventDefault();
+        switch (p.key) {
+            case 'w':
+                pala1.vy = -1;
+                break;
+            case 's':
+                pala1.vy = 1;
+                break;
+            case 'ArrowUp':
+                pala2.vy = -1;
+                break;
+            case 'ArrowDown':
+                pala2.vy = 1;
+                break;
+            default:
+                break;
+        }
+    }
+    window.onkeyup = (p) => {
+        p.preventDefault();
+        switch (p.key) {
+            case 'w':
+                pala1.vy = 0;
+                break;
+            case 's':
+                pala1.vy = 0;
+                break;
+            case 'ArrowUp':
+                pala2.vy = 0;
+                break;
+            case 'ArrowDown':
+                pala2.vy = 0;
+                break;
+            default:
+                break;
+        }
+    }
+
+}
+
+function rebote(pala1, pala2, bola){
+    if (bola.x < (pala1.x + pala1.width) && bola.x > pala1.x){
+        if (bola.y > pala1.y && bola.y < (pala1.y + pala1.height)){
+            bola.vx = -bola.vx;
+        }
+    }
+
+    if ((bola.x + bola.width) > pala2.x && (bola.x + bola.width) < (pala2.x + pala2.width)){
+        if ((bola.y + bola.height) < (pala2.y + pala2.height) && (bola.y + bola.height) > pala2.y){
+            bola.vx = -bola.vx
+        }
+    }
+}
+
+function saque(win, bola, pala1, pala2){
+    if (win == 1){
+        bola.x_ini = 50;
+    }else if (win == 2) {
+        bola.x_ini = 550;
+    }
+    bola.vx = 0;
+    bola.vy = 0;
+    bola.reset();
+    pala1.reset();
+    pala2.reset();
+    pala1.draw();
+    pala2.draw();
+    bola.draw();
+}
+
 function main(){
     var timer = null;
-    var sacar = document.getElementById('sacar');
     var p_x1 = 50;
     var p_y1 = 100;
     var p_x2 = 550;
@@ -131,7 +202,7 @@ function main(){
     pala2.draw()
     campo.draw()
 
-    sacar.onclick = () => {
+    window.onkeypress = (backspace) => {
         if (!timer) {
             timer = setInterval(()=>{
                 bola.update();
@@ -143,63 +214,16 @@ function main(){
                 pala2.draw();
                 campo.draw();
 
-                window.onkeydown = (p) => {
-                    p.preventDefault();
-                    switch (p.key) {
-                        case 'w':
-                            pala1.vy = -1;
-                            break;
-                        case 's':
-                            pala1.vy = 1;
-                            break;
-                        case 'ArrowUp':
-                            pala2.vy = -1;
-                            break;
-                        case 'ArrowDown':
-                            pala2.vy = 1;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                window.onkeyup = (p) => {
-                    p.preventDefault();
-                    switch (p.key) {
-                        case 'w':
-                            pala1.vy = 0;
-                            break;
-                        case 's':
-                            pala1.vy = 0;
-                            break;
-                        case 'ArrowUp':
-                            pala2.vy = 0;
-                            break;
-                        case 'ArrowDown':
-                            pala2.vy = 0;
-                            break;
-                        default:
-                            break;
-                    }
-                }
+                mover_palas(pala1, pala2);
+                rebote(pala1, pala2, bola);
 
                 if (bola.x > canvas.width - bola.width){
-                    bola.vx = -bola.vx;
                     campo.points1 += 1;
+                    saque(1, bola, pala1, pala2);
+
                 }else if (bola.x < bola.width) {
-                    bola.vx = -bola.vx;
                     campo.points2 += 1;
-                }
-
-                if (bola.x < (pala1.x + pala1.width) && bola.x > pala1.x){
-                    if (bola.y > pala1.y && bola.y < (pala1.y + pala1.height)){
-                        bola.vx = -bola.vx;
-                    }
-                }
-
-                if ((bola.x + bola.width) > pala2.x && (bola.x + bola.width) < (pala2.x + pala2.width)){
-                    if ((bola.y + bola.height) < (pala2.y + pala2.height) && (bola.y + bola.height) > pala2.y){
-                        bola.vx = -bola.vx
-                    }
+                    saque(2, bola, pala1, pala2);
                 }
 
                 if (campo.points1 == 7 || campo.points2 == 7) {
