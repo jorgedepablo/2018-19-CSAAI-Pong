@@ -203,7 +203,17 @@ function main(){
     pala2.draw()
     campo.draw()
 
-    window.onkeypress = (backspace) => {
+    var sacar = document.getElementById('sacar')
+    sacar.onclick = () => {
+
+        if (bola.x_ini == p_x1){
+            bola.vx = 4;
+            bola.vy = 1;
+        }else if (bola.x_ini == p_x2) {
+            bola.vx = -4;
+            bola.vy = 1;
+        }
+
         if (!timer) {
             timer = setInterval(()=>{
                 bola.update();
