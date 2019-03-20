@@ -175,6 +175,7 @@ function saque(win, bola, pala1, pala2){
     bola.draw();
 }
 
+
 function main(){
     var timer = null;
     var p_x1 = 50;
