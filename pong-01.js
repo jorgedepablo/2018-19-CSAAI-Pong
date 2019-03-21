@@ -19,8 +19,8 @@ function field (w, h){
         this.ctx.stroke();
 
         this.ctx.font = '80px Arial';
-        this.ctx.fillStyle = 'white';
-        this.ctx.fillText(this.points1, 220, 70);
+        this.ctx.fillStyle = 'grey';
+        this.ctx.fillText(this.points1, 210, 70);
         this.ctx.fillText(this.points2, 340, 70);
     };
 
@@ -146,14 +146,14 @@ function mover_palas(pala1, pala2){
 }
 
 function rebote(pala1, pala2, bola){
-    if (bola.x < (pala1.x + pala1.width) && bola.x > pala1.x){
-        if (bola.y > pala1.y && bola.y < (pala1.y + pala1.height)){
+    if (bola.x <= (pala1.x + pala1.width) && bola.x >= pala1.x){
+        if (bola.y >= pala1.y && bola.y <= (pala1.y + pala1.height)){
             bola.vx = -bola.vx;
         }
     }
 
-    if ((bola.x + bola.width) > pala2.x && (bola.x + bola.width) < (pala2.x + pala2.width)){
-        if ((bola.y + bola.height) < (pala2.y + pala2.height) && (bola.y + bola.height) > pala2.y){
+    if ((bola.x + bola.width) >= pala2.x && (bola.x + bola.width) <= (pala2.x + pala2.width)){
+        if ((bola.y + bola.height) <= (pala2.y + pala2.height) && (bola.y + bola.height) >= pala2.y){
             bola.vx = -bola.vx
         }
     }
@@ -173,6 +173,27 @@ function saque(win, bola, pala1, pala2){
     pala1.draw();
     pala2.draw();
     bola.draw();
+}
+
+function check_difficulty(b, p1, p2){
+    var diffc = document.querySelector('input[name="difficulty"]:checked').value;
+    if (diffc == 'Normal'){
+      b.speed = 1;
+      p1.speed = 6;
+      p2.speed = 6;
+    } else if (diffc == 'Hard') {
+      b.speed = 1.5;
+      p1.speed = 8;
+      p2.speed = 8;
+    } else if (diffc == 'Expert') {
+      b.speed = 2;
+      p1.speed = 10;
+      p2.speed = 10;
+    }else if (diffc == 'God') {
+      b.speed = 3;
+      p1.speed = 12;
+      p2.speed = 12;
+    };
 }
 
 
@@ -203,8 +224,10 @@ function main(){
     pala2.draw()
     campo.draw()
 
+
     var sacar = document.getElementById('sacar')
     sacar.onclick = () => {
+        var puntos = document.querySelector('input[name="targetPoints"]:checked').value;
 
         if (bola.x_ini == p_x1){
             bola.vx = 4;
@@ -216,6 +239,7 @@ function main(){
 
         if (!timer) {
             timer = setInterval(()=>{
+                check_difficulty(bola, pala1, pala2)
                 bola.update();
                 pala1.update();
                 pala2.update();
@@ -231,13 +255,12 @@ function main(){
                 if (bola.x > canvas.width - bola.width){
                     campo.points1 += 1;
                     saque(1, bola, pala1, pala2);
-
                 }else if (bola.x < bola.width) {
                     campo.points2 += 1;
                     saque(2, bola, pala1, pala2);
                 }
 
-                if (campo.points1 == 7 || campo.points2 == 7) {
+                if (campo.points1 == puntos || campo.points2 == puntos) {
                     clearInterval(timer)
                     timer = null;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
