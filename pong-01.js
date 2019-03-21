@@ -100,7 +100,7 @@ function ball(h){
     this.reset = function() {
         this.x = this.x_ini;
         this.y = this.y_ini;
-    }
+    };
 }
 
 function mover_palas(pala1, pala2){
@@ -122,7 +122,7 @@ function mover_palas(pala1, pala2){
             default:
                 break;
         }
-    }
+    };
     window.onkeyup = (p) => {
         p.preventDefault();
         switch (p.key) {
@@ -141,7 +141,7 @@ function mover_palas(pala1, pala2){
             default:
                 break;
         }
-    }
+    };
 
 }
 
@@ -149,14 +149,14 @@ function rebote(pala1, pala2, bola){
     if (bola.x <= (pala1.x + pala1.width) && bola.x >= pala1.x){
         if (bola.y >= pala1.y && bola.y <= (pala1.y + pala1.height)){
             bola.vx = -bola.vx;
-        }
-    }
+        };
+    };
 
     if ((bola.x + bola.width) >= pala2.x && (bola.x + bola.width) <= (pala2.x + pala2.width)){
         if ((bola.y + bola.height) <= (pala2.y + pala2.height) && (bola.y + bola.height) >= pala2.y){
             bola.vx = -bola.vx
-        }
-    }
+        };
+    };
 }
 
 function saque(win, bola, pala1, pala2){
@@ -164,7 +164,7 @@ function saque(win, bola, pala1, pala2){
         bola.x_ini = 50;
     }else if (win == 2) {
         bola.x_ini = 550;
-    }
+    };
     bola.vx = 0;
     bola.vy = 0;
     bola.reset();
@@ -215,17 +215,18 @@ function main(){
     var pala1 = new pala(p_x1, p_y1, canvas.height);
     var pala2 = new pala(p_x2, p_y2, canvas.height);
 
-    bola.init(ctx)
-    pala1.init(ctx)
-    pala2.init(ctx)
-    campo.init(ctx)
-    bola.draw()
-    pala1.draw()
-    pala2.draw()
-    campo.draw()
+    bola.init(ctx);
+    pala1.init(ctx);
+    pala2.init(ctx);
+    campo.init(ctx);
+    bola.draw();
+    pala1.draw();
+    pala2.draw();
+    campo.draw();
 
 
-    var sacar = document.getElementById('sacar')
+    var sacar = document.getElementById('sacar');
+
     sacar.onclick = () => {
         var puntos = document.querySelector('input[name="targetPoints"]:checked').value;
 
