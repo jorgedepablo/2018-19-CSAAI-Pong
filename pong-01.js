@@ -142,7 +142,6 @@ function mover_palas(pala1, pala2){
                 break;
         }
     };
-
 }
 
 function rebote(pala1, pala2, bola){
@@ -240,7 +239,7 @@ function main(){
 
         if (!timer) {
             timer = setInterval(()=>{
-                check_difficulty(bola, pala1, pala2)
+                check_difficulty(bola, pala1, pala2);
                 bola.update();
                 pala1.update();
                 pala2.update();
@@ -264,6 +263,7 @@ function main(){
                 if (campo.points1 == puntos || campo.points2 == puntos) {
                     clearInterval(timer)
                     timer = null;
+                    bola.x_ini = 50;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     bola.reset();
                     pala1.reset();
