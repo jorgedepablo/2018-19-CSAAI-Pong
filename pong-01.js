@@ -17,10 +17,9 @@ function field (w, h){
         this.ctx.moveTo(this.width/2,0);
         this.ctx.lineTo(this.width/2, this.height)
         this.ctx.stroke();
-
-        this.ctx.font = '80px Arial';
+        this.ctx.font = '100px Pixeldub';
         this.ctx.fillStyle = 'grey';
-        this.ctx.fillText(this.points1, 210, 70);
+        this.ctx.fillText(this.points1, 195, 70);
         this.ctx.fillText(this.points2, 340, 70);
     };
 
@@ -195,6 +194,9 @@ function check_difficulty(b, p1, p2){
     };
 }
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 function main(){
     var timer = null;
@@ -230,11 +232,11 @@ function main(){
         var puntos = document.querySelector('input[name="targetPoints"]:checked').value;
 
         if (bola.x_ini == p_x1){
-            bola.vx = 4;
-            bola.vy = 1;
+            bola.vx = getRandomInt(3,6);
+            bola.vy =  getRandomInt(1,4);
         }else if (bola.x_ini == p_x2) {
-            bola.vx = -4;
-            bola.vy = 1;
+            bola.vx =  -1 * getRandomInt(3,6);
+            bola.vy =  getRandomInt(1,4);
         }
 
         if (!timer) {
