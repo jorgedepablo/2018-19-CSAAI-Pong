@@ -64,7 +64,7 @@ function pala(x, y, h){
     };
 }
 
-function ball(h){
+function ball(h, snd){
     this.ctx = null;
     this.fh = h;
     this.x_ini = 50;
@@ -92,6 +92,7 @@ function ball(h){
         this.x += this.vx*this.speed;
         this.y += this.vy*this.speed;
         if (this.y > this.fh - this.height || this.y < this.height){
+            snd.play();
             this.vy = -this.vy;
         }
     };
@@ -143,15 +144,17 @@ function mover_palas(pala1, pala2){
     };
 }
 
-function rebote(pala1, pala2, bola){
+function rebote(pala1, pala2, bola, snd){
     if (bola.x <= (pala1.x + pala1.width) && bola.x >= pala1.x){
         if (bola.y >= pala1.y && bola.y <= (pala1.y + pala1.height)){
+            snd.play();
             bola.vx = -bola.vx;
         };
     };
 
     if ((bola.x + bola.width) >= pala2.x && (bola.x + bola.width) <= (pala2.x + pala2.width)){
         if ((bola.y + bola.height) <= (pala2.y + pala2.height) && (bola.y + bola.height) >= pala2.y){
+            snd.play();
             bola.vx = -bola.vx
         };
     };
@@ -211,8 +214,12 @@ function main(){
 
     var ctx = canvas.getContext("2d");
 
+    var snd1 = new Audio('ping_pong_8bit_plop.ogg');
+    var snd2 = new Audio('ping_pong_8bit_beeep.ogg');
+    var snd3 = new Audio('ping_pong_8bit_peeeeeep.ogg');
+
     var campo = new field(canvas.width, canvas.height);
-    var bola = new ball(canvas.height);
+    var bola = new ball(canvas.height, snd1);
     var pala1 = new pala(p_x1, p_y1, canvas.height);
     var pala2 = new pala(p_x2, p_y2, canvas.height);
 
@@ -252,12 +259,14 @@ function main(){
                 campo.draw();
 
                 mover_palas(pala1, pala2);
-                rebote(pala1, pala2, bola);
+                rebote(pala1, pala2, bola, snd2);
 
                 if (bola.x > canvas.width - bola.width){
+                    snd3.play();
                     campo.points1 += 1;
                     saque(1, bola, pala1, pala2);
                 }else if (bola.x < bola.width) {
+                    snd3.play();
                     campo.points2 += 1;
                     saque(2, bola, pala1, pala2);
                 }
