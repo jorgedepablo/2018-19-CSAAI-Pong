@@ -149,23 +149,15 @@ function rebote(pala1, pala2, bola, snd){
         if (bola.y >= pala1.y && bola.y <= (pala1.y + pala1.height)){
             snd.play();
             bola.vx = -bola.vx;
-            console.log(bola.vx);
-            console.log(bola.vy);
-            bola.vy = -bola.vy;
+            bola.vy =  getRandomInt(-4, 4);
         };
     };
 
     if ((bola.x + bola.width) >= pala2.x && (bola.x + bola.width) <= (pala2.x + pala2.width)){
         if ((bola.y + bola.height) <= (pala2.y + pala2.height) && (bola.y + bola.height) >= pala2.y){
-<<<<<<< HEAD
             snd.play();
-            bola.vx = -bola.vx
-=======
             bola.vx = -bola.vx;
-            console.log(bola.vx);
-            console.log(bola.vy);
-            bola.vy = -bola.vy;
->>>>>>> 9e01209a98d6ccdbfc7b79ad8aebb3ca3fdb3659
+            bola.vy =  getRandomInt(-4, 4);
         };
     };
 }
@@ -250,10 +242,10 @@ function main(){
 
         if (bola.x_ini == p_x1){
             bola.vx = getRandomInt(3,6);
-            bola.vy =  getRandomInt(1,4);
+            bola.vy =  getRandomInt(-4,4);
         }else if (bola.x_ini == p_x2) {
             bola.vx =  -1 * getRandomInt(3,6);
-            bola.vy =  getRandomInt(1,4);
+            bola.vy =  getRandomInt(-4,4);
         }
 
         if (!timer) {
